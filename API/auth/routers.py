@@ -10,7 +10,7 @@ from .responses import common_error_responses, error_responses_with_examples
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-@router.get("/login")
+@router.get("/login", responses={**common_error_responses, **error_responses_with_examples})
 def login_url(request: Request):
     """Generate Login URL for authentication using OAuth2 Application registered with OpenStreetMap.
     Click on the download url returned to get access_token.
@@ -51,7 +51,10 @@ def callback(request: Request):
     return access_token
 
 
-@router.get("/me", response_model=AuthUser)
+@router.get("/me", response_model=AuthUser, responses=
+            {
+                **common_error_responses, **error_responses_with_examples
+            })
 def my_data(user_data: AuthUser = Depends(login_required)):
     """Read the access token and provide  user details from OSM user's API endpoint,
     also integrated with underpass .
