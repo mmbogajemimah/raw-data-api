@@ -51,10 +51,12 @@ router = APIRouter(prefix="", tags=["Extract"])
 
 redis_client = redis.StrictRedis.from_url(CELERY_BROKER_URL)
 
-@router.get("/status", response_model=StatusResponse, responses=
-            {
-                **common_error_responses, **error_responses_with_examples
-            })
+
+@router.get(
+    "/status",
+    response_model=StatusResponse,
+    responses={**common_error_responses, **error_responses_with_examples},
+)
 @version(1)
 def check_database_last_updated():
     """Gives status about how recent the osm data is , it will give the last time that database was updated completely"""
@@ -62,10 +64,11 @@ def check_database_last_updated():
     return {"last_updated": result}
 
 
-@router.post("/snapshot", response_model=SnapshotResponse, responses=
-            {
-                **common_error_responses, **error_responses_with_examples
-            })
+@router.post(
+    "/snapshot",
+    response_model=SnapshotResponse,
+    responses={**common_error_responses, **error_responses_with_examples},
+)
 @limiter.limit(f"{export_rate_limit}/minute")
 @version(1)
 def get_osm_current_snapshot_as_file(
@@ -468,10 +471,10 @@ def get_osm_current_snapshot_as_file(
     )
 
 
-@router.post("/snapshot/plain", responses=
-            {
-                **common_error_responses, **error_responses_with_examples
-            })
+@router.post(
+    "/snapshot/plain",
+    responses={**common_error_responses, **error_responses_with_examples},
+)
 @version(1)
 def get_osm_current_snapshot_as_plain_geojson(
     request: Request,
@@ -503,20 +506,18 @@ def get_osm_current_snapshot_as_plain_geojson(
     return result
 
 
-@router.get("/countries", responses=
-            {
-                **common_error_responses, **error_responses_with_examples
-            })
+@router.get(
+    "/countries", responses={**common_error_responses, **error_responses_with_examples}
+)
 @version(1)
 def get_countries(q: str = ""):
     result = RawData().get_countries_list(q)
     return result
 
 
-@router.get("/osm_id", responses=
-            {
-                **common_error_responses, **error_responses_with_examples
-            })
+@router.get(
+    "/osm_id", responses={**common_error_responses, **error_responses_with_examples}
+)
 @version(1)
 def get_osm_feature(osm_id: int):
     return RawData().get_osm_feature(osm_id)
