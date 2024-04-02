@@ -10,6 +10,7 @@ from src.validation.models import StatsRequestParams
 
 router = APIRouter(prefix="/stats", tags=["Stats"])
 
+
 @router.post("/polygon")
 @limiter.limit(f"{POLYGON_STATISTICS_API_RATE_LIMIT}/minute")
 @version(1)
