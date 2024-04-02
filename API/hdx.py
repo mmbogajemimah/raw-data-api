@@ -69,6 +69,7 @@ async def read_hdx_list(
         raise HTTPException(status_code=422, detail="Couldn't process query")
     return hdx_list
 
+
 @router.get("/search", response_model=List[dict])
 @limiter.limit(f"{RATE_LIMIT_PER_MIN}/minute")
 @version(1)
